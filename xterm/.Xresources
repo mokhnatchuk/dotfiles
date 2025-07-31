@@ -1,41 +1,34 @@
-! Основні налаштування
 xterm*loginShell: true
 xterm*termName: xterm-256color
 xterm*locale: true
 xterm*utf8: 1
 
-! Вигляд вікна
 xterm*scrollBar: false
 xterm*geometry: 80x24
-xterm*internalBorder: 4
+xterm*internalBorder: 2
 xterm*borderWidth: 0
 
-! Шрифт
-xterm*faceName: monospace
-xterm*faceSize: 11
+xterm*faceName: Terminus
+xterm*faceSize: 14
 xterm*renderFont: true
 xterm*allowBoldFonts: true
 xterm*boldMode: true
 
-! Скролінг
 xterm*saveLines: 10000
 xterm*scrollTtyOutput: false
 xterm*scrollKey: true
 xterm*alternateScroll: true
 
-! Курсор
 xterm*cursorBlink: true
 xterm*cursorOnTime: 500
 xterm*cursorOffTime: 500
 xterm*cursorColor: white
 
-! Кольори
 xterm*background: black
 xterm*foreground: white
 xterm*highlightSelection: true
-xterm*highlightColor: #404040
+xterm*highlightColor: #333333
 
-! Стандартні кольори ANSI
 xterm*color0: #000000
 xterm*color1: #cd0000
 xterm*color2: #00cd00
@@ -45,7 +38,6 @@ xterm*color5: #cd00cd
 xterm*color6: #00cdcd
 xterm*color7: #e5e5e5
 
-! Яскраві кольори
 xterm*color8: #7f7f7f
 xterm*color9: #ff0000
 xterm*color10: #00ff00
@@ -55,18 +47,14 @@ xterm*color13: #ff00ff
 xterm*color14: #00ffff
 xterm*color15: #ffffff
 
-! Миша та виділення
 xterm*selectToClipboard: true
 xterm*trimSelection: true
 
-! Клавіатурні скорочення (основні)
 xterm*translations: #override \
     Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
     Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n\
-    Ctrl Shift <Key>A: select-all() \n\
     Ctrl Shift <Key>W: select-word() \n\
     Ctrl Shift <Key>L: select-line() \n\
-    Ctrl Shift <Key>X: select-end(SELECT, CLIPBOARD) clear-saved-lines() \n\
     Ctrl <Key>plus: larger-vt-font() \n\
     Ctrl <Key>minus: smaller-vt-font() \n\
     Ctrl <Key>0: set-vt-font(d) \n\
@@ -75,9 +63,8 @@ xterm*translations: #override \
     Shift <Key>Home: scroll-back(1000000) \n\
     Shift <Key>End: scroll-forw(1000000)
 
-! Додаткові налаштування
 xterm*visualBell: false
-xterm*bellIsUrgent: true
+xterm*bellIsUrgent: false
 xterm*sessionMgt: false
 xterm*printerCommand: lpr
 xterm*metaSendsEscape: true

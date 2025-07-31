@@ -1,6 +1,7 @@
 general {
     colors = true
     interval = 1
+    output_format = "i3bar"
 }
 
 order += "wireless _first_"
@@ -25,7 +26,7 @@ ethernet _first_ {
 }
 
 volume master {
-    format = "Vol %volume"
+    format = "VOL %volume"
     format_muted = "Muted (%volume)"
     device = "default"
     mixer = "Master"
@@ -49,7 +50,7 @@ cpu_temperature 0 {
 
 memory {
     format = "%used"
-    threshold_degraded = "8G"
+    threshold_degraded = "4G"
 }
 
 disk "/" {

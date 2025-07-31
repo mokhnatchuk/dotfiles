@@ -5,10 +5,11 @@ mouse_warping none
 workspace_auto_back_and_forth yes
 force_display_urgency_hint 0 ms
 
-font pango:monospace 11
-hide_edge_borders smart
-default_border pixel
-default_floating_border pixel
+font pango:DejaVu Sans 12
+hide_edge_borders smart_no_gaps
+default_border pixel 2
+default_floating_border pixel 2
+popup_during_fullscreen smart
 
 client.focused          #111111 #000000 #ffffff #111111   #111111
 client.focused_inactive #000000 #000000 #ffffff #000000   #000000
@@ -24,6 +25,8 @@ client.placeholder      #000000 #000000 #ffffff #000000   #000000
 
 # exec --no-startup-id setxkbmap -model pc105 -layout fo,ua -variant nodeadkeys -option grp:lctrl_lwin_toggle
 
+exec --no-startup-id picom
+
 exec --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
 exec --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 0
 exec --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Two-finger Scrolling Enabled" 1
@@ -32,7 +35,7 @@ set $refresh_i3status pkill -SIGUSR1 i3status
 
 floating_modifier $mod
 
-tiling_drag modifier titlebar
+tiling_drag modifier
 
 bindsym $mod+Shift+f exec --no-startup-id redshift -P -O 5000
 bindsym $mod+Shift+g exec --no-startup-id redshift -P -O 5500
@@ -50,11 +53,26 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl -q set 10%-
 bindsym XF86Sleep exec --no-startup-id systemctl suspend
 bindsym XF86PowerOff exec --no-startup-id systemctl poweroff
 
+bindsym Mod1+0 exec --no-startup-id sudo tpfanctl fan auto
+bindsym Mod1+1 exec --no-startup-id sudo tpfanctl fan 1
+bindsym Mod1+2 exec --no-startup-id sudo tpfanctl fan 2
+bindsym Mod1+3 exec --no-startup-id sudo tpfanctl fan 3
+bindsym Mod1+4 exec --no-startup-id sudo tpfanctl fan 4
+bindsym Mod1+5 exec --no-startup-id sudo tpfanctl fan 5
+bindsym Mod1+6 exec --no-startup-id sudo tpfanctl fan 6
+bindsym Mod1+7 exec --no-startup-id sudo tpfanctl fan 7
+
+bindsym Mod1+c exec chromium
+bindsym Mod1+p exec pcmanfm
+bindsym Mod1+a exec audacious
+bindsym Mod1+z exec zeditor
+bindsym Mod1+b exec bleachbit
+
 bindsym $mod+Return exec i3-sensible-terminal
 
 bindsym $mod+q kill
 
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn 'monospace-11' -nb '#000000' -nf '#ffffff' -sb '#ffffff' -sf '#000000'"
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn 'DejaVu Sans 12' -nb '#000000' -nf '#ffffff' -sb '#ffffff' -sf '#000000'"
 
 bindsym Print exec scrot ~/Pictures/Screenshot_%Y%m%d_%H%M%S.png
 bindsym $mod+Print exec scrot -s ~/Pictures/Screenshot_%Y%m%d_%H%M%S.png
@@ -79,8 +97,18 @@ bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Control+space floating toggle
 bindsym $mod+space focus mode_toggle
+bindsym $mod+Control+s sticky toggle
+bindsym $mod+Control+c move position center
+bindsym $mod+Control+Left move left 20px
+bindsym $mod+Control+Down move down 20px
+bindsym $mod+Control+Up move up 20px
+bindsym $mod+Control+Right move right 20px
+bindsym $mod+Control+Shift+Left resize shrink width 20px
+bindsym $mod+Control+Shift+Down resize grow height 20px
+bindsym $mod+Control+Shift+Up resize shrink height 20px
+bindsym $mod+Control+Shift+Right resize grow width 20px
 
 bindsym $mod+a focus parent
 
@@ -148,31 +176,12 @@ mode "$mode_system" {
 }
 bindsym $mod+Shift+q mode "$mode_system"
 
-set $mode_floating Move(arrows) Resize(Shift+arrows) Center(c) Sticky(s) Toggle(t)
-mode "$mode_floating" {
-    bindsym Left move left 20px
-    bindsym Down move down 20px
-    bindsym Up move up 20px
-    bindsym Right move right 20px
-    bindsym Shift+Left resize shrink width 20px
-    bindsym Shift+Down resize grow height 20px
-    bindsym Shift+Up resize shrink height 20px
-    bindsym Shift+Right resize grow width 20px
-    bindsym c move position center
-    bindsym s sticky toggle
-    bindsym t floating toggle
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+Shift+w mode "default"
-}
-bindsym $mod+Shift+w mode "$mode_floating"
-
 bar {
     status_command i3status
     position top
-    separator_symbol "⁝"
+    separator_symbol "⋮"
     workspace_buttons yes
-    strip_workspace_numbers no
+    tray_output primary
 
     colors {
         background #000000
@@ -181,7 +190,7 @@ bar {
 
         focused_workspace  #000000 #000000 #ffffff
         active_workspace   #ffffff #000000 #ffffff
-        inactive_workspace #000000 #000000 #555555
+        inactive_workspace #000000 #000000 #777777
         urgent_workspace   #ff0000 #000000 #ffffff
         binding_mode       #ffff00 #000000 #ffffff
     }
