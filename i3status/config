@@ -1,6 +1,6 @@
 general {
     colors = true
-    interval = 1
+    interval = 2
     output_format = "i3bar"
 
     color_good = "#00FF00"
@@ -38,12 +38,12 @@ volume master {
 }
 
 load {
-    format = " %1min"
+    format = " %1min"
     max_threshold = 4.0
 }
 
 cpu_usage {
-    format = " %usage"
+    format = " %usage"
     degraded_threshold = 60
     max_threshold = 90
 }

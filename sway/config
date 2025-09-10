@@ -6,14 +6,11 @@ default_border pixel 2
 default_floating_border pixel 2
 hide_edge_borders smart_no_gaps
 
-# output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-# output HDMI-A-1 resolution 1920x1080 position 1920,0
-output eDP-1 scale 1
+output eDP-1 position 0,0
+output HDMI-A-2 position 1920,0
 
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+exec swayidle -w \
+     timeout 600 'systemctl suspend'
 
 input type:touchpad {
 	dwt enabled
@@ -30,14 +27,39 @@ input type:keyboard {
 
 exec wlsunset -T 5500 -t 5499
 
-bindcode Mod1+28 exec audacious -t
-bindcode Mod1+41 exec audacious -f
-bindcode Mod1+27 exec audacious -r
+bindcode $mod+33 exec swaymsg output HDMI-A-2 pos 0 0 && swaymsg output eDP-1 pos 0 0
+bindcode $mod+Shift+33 exec swaymsg output eDP-1 pos 0 0 && swaymsg output HDMI-A-2 pos 1920 0
+bindcode $mod+Mod1+33 exec swaymsg output HDMI-A-2 enable pos 0 0 && sleep 0.5 && swaymsg output eDP-1 disable
+bindcode $mod+Ctrl+33 exec swaymsg output eDP-1 enable pos 0 0 && swaymsg output HDMI-A-2 disable
+
+bindsym $mod+Ctrl+Right exec swaymsg move workspace to output HDMI-A-2
+bindsym $mod+Ctrl+Left exec swaymsg move workspace to output eDP-1
+
+bindsym Mod1+0+1 output eDP-1 scale 1.0
+bindsym Mod1+0+2 output eDP-1 scale 1.25
+bindsym Mod1+0+3 output eDP-1 scale 1.5
+bindsym Mod1+0+4 output eDP-1 scale 1.75
+bindsym Mod1+0+5 output eDP-1 scale 2.0
+
+bindsym Mod1+Shift+1 exec swaymsg output HDMI-A-2 scale 1.0
+bindsym Mod1+Shift+2 exec swaymsg output HDMI-A-2 scale 1.25
+bindsym Mod1+Shift+3 exec swaymsg output HDMI-A-2 scale 1.5
+bindsym Mod1+Shift+4 exec swaymsg output HDMI-A-2 scale 1.75
+bindsym Mod1+Shift+5 exec swaymsg output HDMI-A-2 scale 2.0
+
+#bindcode Mod1+28 exec audacious -t
+#bindcode Mod1+41 exec audacious -f
+#bindcode Mod1+27 exec audacious -r
+#bindcode Mod1+39 exec audacious -s
+
+bindcode Mod1+65 exec audacious -t
+bindcode Mod1+57 exec audacious -f
+bindcode Mod1+33 exec audacious -r
 bindcode Mod1+39 exec audacious -s
 
 bindsym Print exec grim "$HOME/Pictures/Screenshots/Screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
 bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/Screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
-bindsym $mod+Shift+Print exec grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" "$HOME/Pictures/Screenshots"/Screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
+bindsym $mod+Shift+Print exec sh -c 'grim -g "$(swaymsg -t get_tree | jq -j '"'"'.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"'"'"')" ~/Pictures/Screenshots/Screenshot-$(date +%Y-%m-%d_%H-%M-%S).png'
 
 bindsym $mod+Mod1+0 exec sudo tpfanctl fan auto
 bindsym $mod+Mod1+1 exec sudo tpfanctl fan 1
@@ -100,6 +122,17 @@ bindsym $mod+a focus parent
 bindsym $mod+Shift+minus move scratchpad
 bindcode $mod+38 scratchpad show
 
+workspace 1 output eDP-1
+workspace 2 output eDP-1
+workspace 3 output eDP-1
+workspace 4 output eDP-1
+workspace 5 output eDP-1
+workspace 6 output HDMI-A-2
+workspace 7 output HDMI-A-2
+workspace 8 output HDMI-A-2
+workspace 9 output HDMI-A-2
+workspace 10 output HDMI-A-2
+
 mode "resize" {
     bindsym Left resize shrink width 10px
     bindsym Down resize grow height 10px
@@ -118,15 +151,10 @@ bindcode $mod+Shift+24 exec swaynag \
 	-B ' Log Out' 'swaymsg exit' \
 	-B ' Lock' 'swaylock -f -c 000000'
 
-bindsym --locked XF86AudioMute exec pamixer -t
-bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
-bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
-bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
-
-# bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-# bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-# bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
-# bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 
 bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 10%+
@@ -151,3 +179,6 @@ bar {
 }
 
 # include /etc/sway/config.d/*
+
+exec systemctl --user import-environment XDG_CURRENT_DESKTOP WAYLAND_DISPLAY
+exec dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP=sway WAYLAND_DISPLAY
